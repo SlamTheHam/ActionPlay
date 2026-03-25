@@ -3,6 +3,7 @@
 #include <atomic>
 #include "Action.h"
 #include "Player.h"
+#include "resource.h"
 
 // ---------------------------------------------------------------------------
 // Constructor / Destructor
