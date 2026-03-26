@@ -40,9 +40,10 @@ if(MSVC)
 
     target_compile_options(ActionPlay PRIVATE /W3 /WX-)
 
-    # Embed a manifest for common controls v6 (visual styles)
+    # Manifest is already embedded via ActionPlay.rc (RT_MANIFEST).
+    # Tell the linker not to generate its own to avoid a duplicate-manifest error.
     set_target_properties(ActionPlay PROPERTIES
-        LINK_FLAGS "/MANIFESTUAC:\"level='asInvoker' uiAccess='false'\"")
+        LINK_FLAGS "/MANIFEST:NO")
 endif()
 
 # MinGW-specific settings
