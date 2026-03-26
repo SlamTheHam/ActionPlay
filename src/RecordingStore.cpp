@@ -165,13 +165,10 @@ FILE* OpenFile(const std::wstring& path, const wchar_t* mode)
     return f;
 }
 
-} // anonymous namespace
-
 // ---------------------------------------------------------------------------
-// RecordingStore implementation
+// File-private helpers (not exposed in the header)
 // ---------------------------------------------------------------------------
-
-std::wstring RecordingStore::GetRecordingsDir()
+static std::wstring GetRecordingsDirImpl()
 {
     wchar_t docsPath[MAX_PATH] = {};
     if (FAILED(SHGetFolderPathW(NULL, CSIDL_PERSONAL, NULL, 0, docsPath)))
@@ -184,9 +181,9 @@ std::wstring RecordingStore::GetRecordingsDir()
     return dir;
 }
 
-bool RecordingStore::EnsureDir()
+static bool EnsureDir()
 {
-    std::wstring dir = GetRecordingsDir();
+    std::wstring dir = GetRecordingsDirImpl();
     if (dir.empty())
         return false;
 
@@ -198,12 +195,23 @@ bool RecordingStore::EnsureDir()
     return true;
 }
 
+} // anonymous namespace
+
+// ---------------------------------------------------------------------------
+// RecordingStore implementation
+// ---------------------------------------------------------------------------
+
+std::wstring RecordingStore::GetRecordingsDir()
+{
+    return GetRecordingsDirImpl();
+}
+
 bool RecordingStore::Save(const std::wstring& name, const ActionList& actions)
 {
     if (!EnsureDir())
         return false;
 
-    std::wstring dir      = GetRecordingsDir();
+    std::wstring dir      = GetRecordingsDirImpl();
     std::wstring safeName = SanitizeFilename(name);
     if (safeName.empty())
         safeName = L"recording";
@@ -293,7 +301,7 @@ std::vector<SavedRecording> RecordingStore::ListAll()
 {
     std::vector<SavedRecording> results;
 
-    std::wstring dir = GetRecordingsDir();
+    std::wstring dir = GetRecordingsDirImpl();
     if (dir.empty())
         return results;
 

@@ -13,8 +13,10 @@ struct SavedRecording {
 
 class RecordingStore {
 public:
+    // Returns the directory where recordings are stored.
+    // Useful for displaying the path to the user.
     static std::wstring GetRecordingsDir();   // %USERPROFILE%\Documents\ActionPlay Recordings\
-    static bool         EnsureDir();
+
     static bool         Save(const std::wstring& name, const ActionList& actions);
     static bool         LoadActions(const std::wstring& filePath, ActionList& out);
     static std::vector<SavedRecording> ListAll();   // metadata only (no actions loaded)
