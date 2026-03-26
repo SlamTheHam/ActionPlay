@@ -13,6 +13,8 @@ set(SOURCES
     src/MainWindow.cpp
     src/Recorder.cpp
     src/Player.cpp
+    src/RecordingStore.cpp
+    src/NameDialog.cpp
 )
 
 # Resource file (manifest + version info)
